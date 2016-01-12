@@ -42,12 +42,16 @@ function EnebularTransporter() {
             }
         },
         searchFlow : function(tag, onTimeout) {
-            window.parent.postMessage({
-                event : 'searchflow',
-                body : {
-                    tag : tag
-                }
-            }, ENEBULAR_URL);
+            if(window.parent.location.origin == ENEBULAR_URL) {
+              var r = window.parent.postMessage({
+                  event : 'searchflow',
+                  body : {
+                      tag : tag
+                  }
+              }, ENEBULAR_URL);
+            }else{
+                RED.notify("Failed connecting to enebular. Please access "+ENEBULAR_URL, "error");
+            }
             current_timer = setTimeout(onTimeout, 3000);
         }
     }
