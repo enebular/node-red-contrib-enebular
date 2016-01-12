@@ -1,14 +1,68 @@
 <script type="text/javascript">
 
-//var ENEBULAR_URL = 'http://enebular.com';
-var ENEBULAR_URL = 'http://localhost:7000';
+var ENEBULAR_URLS = ['https://enebular.com','http://enebular.com','https://enebular-staging.herokuapp.com','http://enebular-staging.herokuapp.com','http://localhost:7000']
+
+var ENEBULAR_URL = 'https://enebular.com';
+//var ENEBULAR_URL = 'http://localhost:7000';
+
+RED.nodes.registerType('enebular',{
+    category: 'function',
+    color: '#a6bbcf',
+    defaults: {
+        url: {value:'https://enebular.com'}
+    },
+    inputs:1,
+    outputs:1,
+    icon: "file.png",
+    label: function() {
+        return this.name || 'enebular';
+    },
+    oneditprepare: function () {
+    },
+    onpaletteadd: function () {
+    },
+    oneditsave: function() {
+      var node = this;
+      var url = $("#node-input-url").val();
+      node.url = url;
+      ENEBULAR_URL = url;
+      console.log(ENEBULAR_URL);
+      init(url);
+    }
+});
+
+function admin_get(url, cb) {
+    admin_base(url, 'GET', null, cb);
+}
+
+function admin_base(url, method, body, cb) {
+    var auth_tokens = RED.settings.get("auth-tokens");
+    var headers = {
+        "Accept":"application/json",
+    }
+    if(auth_tokens) {
+        headers["Authorization"] = "Bearer "+auth_tokens.access_token;
+    }
+    $.ajax({
+        headers: headers,
+        contentType: 'application/json',
+        type: method,
+        data: body,
+        cache: false,
+        url: url,
+        success: function(data) {
+            //console.log("nodes", data);
+            cb(null, data);
+        }
+    });
+}
+
 
 function EnebularTransporter() {
     var current_timer = null;
     var callbacks = {};
-      console.log(window);
     window.addEventListener('message', function(e) {
-      console.log(e);
+        console.log(e.data);
         var cbs = callbacks[e.data.event];
         if(!cbs) return;
         if(e.data.body.err) {
@@ -16,24 +70,34 @@ function EnebularTransporter() {
         }else{
             if(cbs.onSuccess) cbs.onSuccess(e.data.body.content);
         }
-        clearTimeout(current_timer);
+        if(cbs.current_timer) clearTimeout(cbs.current_timer);
     });
     return {
-        load : function() {
-            window.parent.postMessage({
+        postMessage : function(mes) {
+            window.parent.postMessage(mes, ENEBULAR_URL);
+        },
+        load : function(cb) {
+            this.postMessage({
                 event : 'loaded',
-            }, ENEBULAR_URL);
+            });
+            callbacks['loaded'] = {
+                onSuccess : cb,
+                onError : function() {},
+                current_timer : setTimeout(function() {
+                    RED.notify("Failed connecting to enebular. Please access "+ENEBULAR_URL, "error");
+                }, 3000)
+            }
         },
         addFlow : function(body, _onSuccess, _onError, onTimeout) {
-            window.parent.postMessage({
+            this.postMessage({
                 event : 'flowadded',
                 body : body
-            }, ENEBULAR_URL);
+            });
             callbacks['flowadded'] = {
                 onSuccess : _onSuccess,
-                onError : _onError
+                onError : _onError,
+                current_timer : setTimeout(onTimeout, 3000)
             }
-            current_timer = setTimeout(onTimeout, 3000);
         },
         addSearchFlowListener : function(_onSuccess, _onError) {
             callbacks['searchflow'] = {
@@ -42,17 +106,13 @@ function EnebularTransporter() {
             }
         },
         searchFlow : function(tag, onTimeout) {
-            if(window.parent.location.origin == ENEBULAR_URL) {
-              var r = window.parent.postMessage({
-                  event : 'searchflow',
-                  body : {
-                      tag : tag
-                  }
-              }, ENEBULAR_URL);
-            }else{
-                RED.notify("Failed connecting to enebular. Please access "+ENEBULAR_URL, "error");
-            }
-            current_timer = setTimeout(onTimeout, 3000);
+            this.postMessage({
+                event : 'searchflow',
+                body : {
+                    tag : tag
+                },
+                current_timer : setTimeout(onTimeout, 3000)
+            });
         }
     }
 }
@@ -163,10 +223,23 @@ FlowTab.prototype.importNode = function(body) {
 }
 
 var enebularTransporter = new EnebularTransporter();
-enebularTransporter.load();
-var flowTab = new FlowTab(enebularTransporter);
-onFlowInit(flowTab);
-RED.view.redraw();
+var loaded = false;
+init();
+
+function init(url) {
+  if(loaded) {
+    console.log('already loaded');
+  }
+  admin_get('/enebular/url', function(err, data) {
+    ENEBULAR_URL = url || data.url;
+    enebularTransporter.load(function() {
+      loaded = true;
+      var flowTab = new FlowTab(enebularTransporter);
+      onFlowInit(flowTab);
+      RED.view.redraw();
+    }); 
+  })
+}
 
 </script>
 
@@ -232,13 +305,13 @@ RED.view.redraw();
 
 </style>
 
-<script type="text/x-red" data-template-name="flow">
+<script type="text/x-red" data-template-name="enebular">
     <div class="form-row">
-        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
-        <input type="text" id="node-input-name" placeholder="Name">
+        <label for="node-input-url"><i class="icon-tag"></i> URL</label>
+        <input type="text" id="node-input-url" placeholder="URL">
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="flow">
+<script type="text/x-red" data-help-name="enebular">
     <p>A simple node that converts the message payloads into all lower-case characters</p>
 </script>
