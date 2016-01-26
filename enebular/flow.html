@@ -1,3 +1,36 @@
+<script type="text/x-red" data-template-name="enebular credential">
+  <div class="form-row">
+    <label for="node-config-input-appId"><i class="fa fa-bookmark"></i> App ID</label>
+    <input type="text" id="node-config-input-appId" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-apiKey"><i class="fa fa-bookmark"></i> API Key</label>
+    <input type="text" id="node-config-input-apiKey" />
+  </div>
+  <div class="form-row">
+    <label for="node-config-input-apiSecret"><i class="fa fa-lock"></i> API Secret</label>
+    <input type="password" id="node-config-input-apiSecret">
+  </div>
+</script>
+
+<script type="text/javascript">
+  RED.nodes.registerType('enebular credential', {
+    category: 'config',
+    color: '#dfd9cf',
+    defaults: {
+      appId: { value: '', required: true }
+    },
+    credentials: {
+      appId: { type: 'text', required: true },
+      apiKey: { type: 'text' },
+      apiSecret: { type: 'password' }
+    },
+    label: function () {
+      return this.appId;
+    }
+  });
+</script>
+
 <script type="text/javascript">
 
 var ENEBULAR_URLS = ['https://enebular.com','http://enebular.com','https://enebular-staging.herokuapp.com','http://enebular-staging.herokuapp.com','http://localhost:7000']
@@ -9,7 +42,11 @@ RED.nodes.registerType('enebular',{
     category: 'function',
     color: '#a6bbcf',
     defaults: {
-        url: {value:'https://enebular.com'}
+      url: {value:'https://enebular.com'},
+      milkcocoa: { type: 'milkcocoa', required: true },
+      dataStore: { value: '', required: true },
+      operation: { value: 'push' },
+      name: { value: '' }
     },
     inputs:1,
     outputs:1,
@@ -20,6 +57,12 @@ RED.nodes.registerType('enebular',{
     oneditprepare: function () {
     },
     onpaletteadd: function () {
+      RED.menu.addItem("menu-item-export", { id: 'menu-item-export-enebular', label: "enebular", onselect: onselectHandler });
+        function onselectHandler(){
+          var nns = RED.nodes.createExportableNodeSet(RED.view.selection().nodes);
+          console.log(nns);
+        }
+
     },
     oneditsave: function() {
       var node = this;
@@ -310,6 +353,31 @@ function init(url) {
         <label for="node-input-url"><i class="icon-tag"></i> URL</label>
         <input type="text" id="node-input-url" placeholder="URL">
     </div>
+  <div class="form-row">
+    <label for="node-input-milkcocoa"><i class="fa fa-user"></i> Log in as</label>
+    <input type="text" id="node-input-milkcocoa">
+  </div>
+  <div class="form-row">
+    <label for="node-input-dataStore"><i class="fa fa-database"></i> Data Store</label>
+    <input type="text" id="node-input-dataStore">
+  </div>
+  <div class="form-row">
+    <label for="node-input-operation"><i class="fa fa-wrench"></i> Operation</label>
+    <select type="text" id="node-input-operation">
+      <option value="push">Push</option>
+      <option value="send">Send</option>
+      <option value="set">Set</option>
+      <option value="remove">Remove</option>
+    </select>
+  </div>
+  <div class="form-row input-targetId-row hidden">
+    <label for="node-input-targetId"><i class="fa fa-bookmark"></i> Data ID</label>
+    <input type="text" id="node-input-targetId" placeholder="Data ID">
+  </div>
+  <div class="form-row">
+    <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+    <input type="text" id="node-input-name" placeholder="Name">
+  </div>
 </script>
 
 <script type="text/x-red" data-help-name="enebular">

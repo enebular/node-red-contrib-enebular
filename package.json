@@ -8,6 +8,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "milkcocoa": "^0.4.1",
     "request": "^2.65.0",
     "when": "~3.x"
   },
@@ -33,7 +34,7 @@
   "maintainers": [
     {
       "name": "syuhei176",
-	    "email": "syuhei176@gmail.com"
+      "email": "syuhei176@gmail.com"
     }
   ]
 }
