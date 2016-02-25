@@ -8,6 +8,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "htmlspecialchars": "^1.0.5",
     "milkcocoa": "^0.4.1",
     "request": "^2.65.0",
     "when": "~3.x"
@@ -36,5 +37,10 @@
       "name": "syuhei176",
       "email": "syuhei176@gmail.com"
     }
-  ]
+  ],
+  "node-red": {
+    "nodes": {
+      "lambda-deploy": "enebular/lambda-deploy.js"
+    }
+  }
 }

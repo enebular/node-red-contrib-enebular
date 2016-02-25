@@ -1,0 +1,42 @@
+<script type="text/javascript">
+
+var ENEBULAR_URLS = ['https://enebular.com','http://enebular.com','https://enebular-staging.herokuapp.com','http://enebular-staging.herokuapp.com','http://localhost:7000']
+var ENEBULAR_URL = 'https://enebular.com';
+//var ENEBULAR_URL = 'http://localhost:7000';
+
+RED.menu.addItem("menu-item-export", { id: 'menu-item-export-lambda', label: "Export to Other Services", onselect: onLambdaDeploy });
+
+function onLambdaDeploy() {
+    var nodes = RED.nodes.createExportableNodeSet(RED.view.selection().nodes);
+    var tabNodes = nodes.reduce(function(ids, n) {
+        var id = n.z;
+        return id && ids.indexOf(id) < 0 ? ids.concat(id) : ids;
+    }, [])
+    .map(function(id, i) {
+        return {
+            type: "tab",
+            id: id,
+            label: "Sheet " + (i + 1)
+        };
+    });
+    console.log(tabNodes);
+    var flows = tabNodes.concat(nodes);
+    var deployUrl = "/enebular/deploy";
+    var w = window.open("about:blank", "_blank", "width=1000,height=600");
+    if (w) {
+        console.log(flows);
+        var formPostHtml =
+            '<html><body>' +
+            '<form name="form1" method="POST" action="' + deployUrl + '">' +
+            '<input type="hidden" name="flows" />' +
+            '</form>' +
+            '</body></html>';
+        w.document.open();
+        w.document.write(formPostHtml);
+        w.document.close();
+        w.document.form1.flows.value = JSON.stringify(flows);
+        w.document.form1.submit();
+    }
+}
+
+</script>
