@@ -1,9 +1,5 @@
 <script type="text/javascript">
 
-var ENEBULAR_URLS = ['https://enebular.com','http://enebular.com','https://enebular-staging.herokuapp.com','http://enebular-staging.herokuapp.com','http://localhost:7000']
-var ENEBULAR_URL = 'https://enebular.com';
-//var ENEBULAR_URL = 'http://localhost:7000';
-
 RED.menu.addItem("menu-item-export", { id: 'menu-item-export-lambda', label: "Export to Other Services", onselect: onLambdaDeploy });
 
 function onLambdaDeploy() {
@@ -19,12 +15,12 @@ function onLambdaDeploy() {
             label: "Sheet " + (i + 1)
         };
     });
-    console.log(tabNodes);
+    // console.log(tabNodes);
     var flows = tabNodes.concat(nodes);
     var deployUrl = "/enebular/deploy";
     var w = window.open("about:blank", "_blank", "width=1000,height=600");
     if (w) {
-        console.log(flows);
+        // console.log(flows);
         var formPostHtml =
             '<html><body>' +
             '<form name="form1" method="POST" action="' + deployUrl + '">' +
