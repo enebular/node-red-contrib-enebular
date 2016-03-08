@@ -38,9 +38,11 @@
       "email": "syuhei176@gmail.com"
     }
   ],
+  "main": "./enebular/hub.js",
   "node-red": {
     "nodes": {
-      "lambda-deploy": "enebular/lambda-deploy.js"
+      "lambda-deploy": "enebular/lambda-deploy.js",
+      "aws-lambda-io": "enebular/aws-lambda-io.js"
     }
   }
 }
