@@ -1,0 +1,50 @@
+<script type="text/x-red" data-help-name="analogin">
+
+    <p>ADコンバータの値を取得する enebular-edge-agent用 のノードです。</p>
+  
+    <h3>出力</h3>
+    <dl class="message-properties">
+        <dt>payload<span class="property-type">数値型</span></dt>
+        <dd>ADコンバータが取得した値</dd>
+        <dt>analogin<span class="property-type">数値型</span></dt>
+        <dd>ADコンバータが取得した値 ※payloadと同値</dd>
+        <dt class="optional">topic <span class="property-type">文字列</span></dt>
+        <dd>ノードで設定したピン ※ボードで制御したピンなため、設定項目の値とは表記が異なります。</dd>
+    </dl>
+  
+    <h3>詳細</h3>
+    
+    <h4>設定項目</h4>
+      <ul>
+        <li><code>Board</code>： 制御対象のボードを指定※</li>
+        <li><code>Pin</code>： 制御対象のピンを指定※</li>
+        <li><code>Value</code>: ADコンバータの値の出力の形式設定</li>
+        <ul>
+          <li><code>int</code>: 0 - 65535 の範囲で出力</li>
+          <li><code>float</code>: 0.0000 - 1.0000 の範囲で出力</li>
+          <li><code>voltage</code>: 0.0000 - 3.3000 の範囲で出力</li>
+        </ul>
+      </ul>
+      <p>※<code>Board</code> ,<code>Pin</code>については下記を参照してください。</p>
+  
+    <h4>フローエディタ上での動作</h4>
+    <p>enebular-edge-agent用のノードは共通して、フローエディタ上ではセンサの値ではなく、ダミーの値を出力します。</p>
+    <p>出力の形式はボード上で出力されるものと同一です。ダミーの出力を使用して、フローの編集をすることができます。</p>
+    <p>analoginノードでは、<code>msg.payload</code>と<code>msg.analogin</code>の値が valueType の値によって異なる固定値になります。</p>
+    <ul>
+      <li>int : 65535</li>
+      <li>float : 1</li>
+    <li>voltage : 3.3</li>
+    </ul>
+  
+    <h4>enebular-edge-agentについて</h4>
+  
+    <p>enebular-edge-agent はRAVEN ,SBB のボードに対応しています。ボードのポートについては下記画像を参考の上設定してください。また、異なるボードの設定をデプロイした場合フローが実行されません。</p>
+  
+    <h5>RAVEN</h5>
+    <img src="icons/node-red-contrib-enebular/eea_fig_v2.png">
+    
+    <h5>SBB</h5>
+    <img src="icons/node-red-contrib-enebular/eea_fig_v1.png">
+
+</script>

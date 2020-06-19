@@ -1,0 +1,39 @@
+<script type="text/x-red" data-help-name="interruptin">
+  
+  <p> Start flow by interrupt in. This node is for enebular-edge-agent. </p>
+
+  <h3>Outputs</h3>
+  <dl class="message-properties">
+      <dt>payload<span class="property-type">string</span></dt>
+      <dd>The value ("high" or "low") of pin signal.</dd>
+      <dt>topic<span class="property-type">string</span></dt>
+      <dd>The pin name interrupting in. * This name is controlled by micro board. So it is different from node config value.</dd>
+  </dl>
+
+  <h3>Details</h3>
+  
+  <h4>Setting items</h4>
+  <ul>
+      <li><code>Board</code>： Target board.*1</li>
+      <li><code>Pin</code>： Target pin.*1</li>
+      <li><code>Mode</code>: Set `pullUp`/`pullDown`/`pullNone` according to the electronic circuit</li>
+      <li><code>Trigger</code>: The trigger signal rise or fall.</li>
+  </ul>
+    <p>*1 See below about <code>Board</code> and <code>Pin</code>.</p>
+
+  <h4>Operation on flow editor</h4>
+  <p>On flow editor, the nodes for enebular-edge-agent doesn't output value read by module but dummy value on flow editor.</p>
+  <p>Output format of the value is equal to on the module. So, able to edit flow by using dummy value.</p>
+  <p>In this node, press left botton to start flow.</p>
+
+  <h4>About enebular-edge-agent</h4>
+
+  <p>enebular-edge-agent operates on RAVEN and SBB. Please refer to the following to set the board pin assignment. Deploying settings of different boards Flow is not executed.</p>
+  
+  <h5>RAVEN</h5>
+  <img src="icons/node-red-contrib-enebular/eea_fig_v2.png">
+  
+  <h5>SBB</h5>
+  <img src="icons/node-red-contrib-enebular/eea_fig_v1.png">
+
+</script>

@@ -1,0 +1,77 @@
+<script type="text/x-red" data-help-name="digitalout">
+
+    <p> Write digital value to modules. This node is for enebular-edge-agent. </p>
+
+    <h3>Inputs</h3>
+    <p>If set <code>-</code> in <code>Value</code>, it is reffer to <code>msg.{pin}</code>.</p>
+
+    <dl class="message-properties">
+        <dt class="optional">{pin} <span class="property-type">boolean</span></dt>
+        <dd>Value to write to modules.</dd>
+    </dl>
+
+    <p>See below, you understand property corresponding to each item of Pin.</p>
+    <p>If you write <code>true</code> to SBB RIGHT RED, please set <code>true</code> to <code>msg.PTC12</code>.</p>
+    <ul>
+        <li>RAVEN</li>
+        <ul>
+            <li><code>PORT1 - SIG1</code> : GRV11</li>
+            <li><code>PORT1 - SIG2</code> : GRV12</li>
+            <li><code>PORT2 - SIG1</code> : GRV21</li>
+            <li><code>PORT2 - SIG2</code> : GRV22</li>
+            <li><code>PORT3 - SIG1</code> : GRV31</li>
+            <li><code>PORT3 - SIG2</code> : GRV32</li>
+            <li><code>PORT4 - SIG1</code> : GRV41</li>
+            <li><code>PORT4 - SIG2</code> : GRV42</li>
+            <li><code>USER RED</code> : ULED</li>
+        </ul>
+        <li>SBB</li>
+        <ul>
+            <li><code>GRV I2C - SIG1</code> : PTE24</li>
+            <li><code>GRV I2C - SIG2</code> : PTE25</li>
+            <li><code>GRV I/O - SIG1</code> : A4</li>
+            <li><code>GRV I/O - SIG2</code> : A5</li>
+            <li><code>SBB RIGHT RED</code> : PTC12</li>
+            <li><code>SBB RIGHT GREEN</code> : PTC3</li>
+            <li><code>SBB RIGHT BLUE</code> : PTC2</li>
+            <li><code>SBB LEFT RED</code> : PTA2</li>
+            <li><code>SBB LEFT GREEN</code> : PTB23</li>
+            <li><code>SBB LEFT BLUE</code> : PTA1</li>
+            <li><code>K64F RED</code> : LED1</li>
+            <li><code>K64F GREEN</code> : LED2</li>
+            <li><code>K64F BLUE</code> : LED3</li>
+        </ul>
+    </ul>
+
+    <h3>Outputs</h3>
+
+    <p>This node doesn't change msg object just by writing value to modules.</p>
+
+    <h3>Details</h3>
+
+    <h4>Setting items</h4>
+    <ul>
+        <li><code>Board</code>： Target board.*1</li>
+        <li><code>Pin</code>： Target pin.*1</li>
+        <li><code>Value</code>: The value to write to module.</li>
+        <li><code>Signal Inversion</code>: Whether to inversion signal or not.</li>
+    </ul>
+
+    <p>*1 See below about <code>Board</code> and <code>Pin</code>.</p>
+
+    <h4>Operation on flow editor</h4>
+    <p>On flow editor, the nodes for enebular-edge-agent doesn't output value read by module but dummy value on flow editor.</p>
+    <p>Output format of the value is equal to on the module. So, able to edit flow by using dummy value.</p>
+    <p>In this node, module replaces status.</p>
+
+    <h4>About enebular-edge-agent</h4>
+
+    <p>enebular-edge-agent operates on RAVEN and SBB. Please refer to the following to set the board pin assignment. Deploying settings of different boards Flow is not executed.</p>
+
+    <h5>RAVEN</h5>
+    <img src="icons/node-red-contrib-enebular/eea_fig_v2.png">
+
+    <h5>SBB</h5>
+    <img src="icons/node-red-contrib-enebular/eea_fig_v1.png">
+
+</script>
