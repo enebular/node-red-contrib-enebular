@@ -46,7 +46,6 @@
       "TSL2561": "enebular/TSL2561.js",
       "BME280": "enebular/BME280.js",
       "digitalout": "enebular/digitalout.js",
-      "rpi-gpio": "enebular/rp-gpio.js",
       "analogin": "enebular/analogin.js",
       "interruptin": "enebular/interruptin.js"
     }
