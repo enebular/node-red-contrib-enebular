@@ -40,6 +40,8 @@
   "main": "./enebular/hub.js",
   "node-red": {
     "nodes": {
+      "reload": "enebular/reload.js",
+      "lambda-deploy": "enebular/lambda-deploy.js",
       "aws-lambda-io": "enebular/aws-lambda-io.js",
       "TSL2561": "enebular/TSL2561.js",
       "BME280": "enebular/BME280.js",
