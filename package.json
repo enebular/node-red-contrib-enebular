@@ -1,6 +1,6 @@
 {
   "name": "@uhuru/node-red-contrib-enebular",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "scripts": {
     "start": "node app.js"
   },
@@ -30,8 +30,6 @@
   "main": "./enebular/hub.js",
   "node-red": {
     "nodes": {
-      "reload": "enebular/reload.js",
-      "lambda-deploy": "enebular/lambda-deploy.js",
       "aws-lambda-io": "enebular/aws-lambda-io.js"
     }
   },
