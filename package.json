@@ -9,6 +9,9 @@
     "request": "^2.65.0",
     "when": "~3.x"
   },
+  "overrides": {
+    "tough-cookie": "4.1.4"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/enebular/node-red-contrib-enebular.git"
