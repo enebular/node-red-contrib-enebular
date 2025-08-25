@@ -1,6 +1,6 @@
 {
   "name": "@uhuru/node-red-contrib-enebular",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "scripts": {
     "start": "node app.js"
   },
